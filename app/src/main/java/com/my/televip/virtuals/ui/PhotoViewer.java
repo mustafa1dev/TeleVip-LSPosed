@@ -1,6 +1,7 @@
 package com.my.televip.virtuals.ui;
 
 import android.app.Activity;
+import android.view.View;
 
 import com.my.televip.Class.ClassNames;
 import com.my.televip.Class.ClassLoad;
@@ -28,6 +29,10 @@ public class PhotoViewer {
 
     public void openPhoto(MessageObject messageObject, long l, long l2, long l3, PhotoViewerProvider provider, boolean b){
         XposedHelpers.callMethod(photoViewer,  AutomationResolver.resolve("PhotoViewer", "openPhoto", AutomationResolver.ResolverType.Method), messageObject.getMessageObject(),l, l2, l3, provider.getPhotoViewerProvider(), b);
+    }
+
+    public View getGalleryButton(){
+        return (View) XposedHelpers.getObjectField(photoViewer,  AutomationResolver.resolve("PhotoViewer", "galleryButton", AutomationResolver.ResolverType.Field));
     }
 
     public static class PhotoViewerProvider {

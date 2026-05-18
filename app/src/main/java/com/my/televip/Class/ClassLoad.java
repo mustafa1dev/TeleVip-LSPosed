@@ -1,11 +1,9 @@
 package com.my.televip.Class;
 
-import android.content.Context;
-
 import com.my.televip.ClientChecker;
-import com.my.televip.Utils;
 import com.my.televip.logging.Logger;
 import com.my.televip.obfuscate.AutomationResolver;
+import com.my.televip.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +11,6 @@ import java.util.Map;
 import de.robv.android.xposed.XposedHelpers;
 
 public class ClassLoad {
-
 
     private static final Map<String, Class<?>> cache = new HashMap<>();
 
@@ -58,7 +55,7 @@ public class ClassLoad {
             if (cls != null) {
                 cache.put(resolved, cls);
             } else {
-                Logger.w("Not found " + name + ", " + resolved + " " + Utils.issue);
+                Logger.w("Not found Class " + name + ", " + resolved + " " + Utils.issue);
             }
             return cls;
 
@@ -66,18 +63,6 @@ public class ClassLoad {
             Logger.e(e);
             return null;
         }
-    }
-
-    private static Context applicationContext;
-
-    public static Context getApplicationContext() {
-        if (applicationContext == null) {
-            applicationContext = (Context) XposedHelpers.getStaticObjectField(
-                    getClass(ClassNames.APPLICATION_LOADER),
-                    AutomationResolver.resolve("ApplicationLoader", "applicationContext", AutomationResolver.ResolverType.Field)
-            );
-        }
-        return applicationContext;
     }
 
 }

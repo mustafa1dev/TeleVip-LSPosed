@@ -8,6 +8,7 @@ import com.my.televip.Class.ClassLoad;
 import com.my.televip.Class.ClassNames;
 import com.my.televip.base.AbstractMethodHook;
 import com.my.televip.hooks.HMethod;
+import com.my.televip.utils.Utils;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;

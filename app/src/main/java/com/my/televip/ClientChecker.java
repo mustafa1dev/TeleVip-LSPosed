@@ -1,5 +1,7 @@
 package com.my.televip;
 
+import com.my.televip.utils.Utils;
+
 import java.util.Arrays;
 
 public class ClientChecker {

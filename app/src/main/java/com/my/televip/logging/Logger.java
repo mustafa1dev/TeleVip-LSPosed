@@ -1,12 +1,13 @@
 package com.my.televip.logging;
 
-import static com.my.televip.Utils.pkgName;
+import static com.my.televip.utils.Utils.pkgName;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 
-import com.my.televip.Class.ClassLoad;
+import com.my.televip.application.ApplicationLoaderHook;
 import com.my.televip.obfuscate.struct.ResolverRegistry;
 
 import de.robv.android.xposed.XposedBridge;
@@ -20,7 +21,7 @@ public class Logger {
 
     public static void l(String text)
     {
-        XposedBridge.log("[TeleVip] pkgName: "+ pkgName +" " + text);
+        Log.i("TeleVip","[TeleVip] pkgName: "+ pkgName +" " + text);
     }
 
     public static void e(Throwable throwable) {
@@ -31,8 +32,8 @@ public class Logger {
             log.append("appName = ").append(ResolverRegistry.getResolverClass().getSimpleName()).append("\n");
 
             try {
-                PackageManager pm = ClassLoad.getApplicationContext().getPackageManager();
-                PackageInfo info = pm.getPackageInfo(ClassLoad.getApplicationContext().getPackageName(), 0);
+                PackageManager pm = ApplicationLoaderHook.getApplicationContext().getPackageManager();
+                PackageInfo info = pm.getPackageInfo(ApplicationLoaderHook.getApplicationContext().getPackageName(), 0);
                 String versionName = info.versionName;
                 int versionCode = info.versionCode;
 

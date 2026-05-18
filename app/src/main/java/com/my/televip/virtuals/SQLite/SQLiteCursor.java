@@ -20,6 +20,11 @@ public class SQLiteCursor {
     public int intValue(int columnIndex) {
         return (int) XposedHelpers.callMethod(sqLiteCursor, AutomationResolver.resolve("SQLiteCursor", "intValue", AutomationResolver.ResolverType.Method), columnIndex);
     }
+
+    public long longValue(int columnIndex) {
+        return (long) XposedHelpers.callMethod(sqLiteCursor, AutomationResolver.resolve("SQLiteCursor", "longValue", AutomationResolver.ResolverType.Method), columnIndex);
+    }
+
     public void dispose() {
         XposedHelpers.callMethod(sqLiteCursor, AutomationResolver.resolve("SQLiteCursor", "dispose", AutomationResolver.ResolverType.Method));
     }

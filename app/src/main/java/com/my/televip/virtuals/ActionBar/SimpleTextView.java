@@ -1,5 +1,6 @@
 package com.my.televip.virtuals.ActionBar;
 
+import android.text.Layout;
 import android.view.View;
 
 import com.my.televip.obfuscate.AutomationResolver;
@@ -15,11 +16,23 @@ public class SimpleTextView {
     }
 
     public CharSequence getText(){
-        return (CharSequence) XposedHelpers.getObjectField(simpleTextView, AutomationResolver.resolve("SimpleTextView", "text", AutomationResolver.ResolverType.Field));
+        return (CharSequence) XposedHelpers.callMethod(simpleTextView, AutomationResolver.resolve("SimpleTextView", "getText", AutomationResolver.ResolverType.Method));
     }
 
     public void setText(CharSequence text){
         XposedHelpers.callMethod(simpleTextView, AutomationResolver.resolve("SimpleTextView", "setText", AutomationResolver.ResolverType.Method), text);
+    }
+
+    public void setText(CharSequence text, boolean force){
+        XposedHelpers.callMethod(simpleTextView, AutomationResolver.resolve("SimpleTextView", "setText", AutomationResolver.ResolverType.Method), text, force);
+    }
+
+    public void setAlignment(Layout.Alignment alignment){
+        XposedHelpers.callMethod(simpleTextView, AutomationResolver.resolve("SimpleTextView", "setAlignment", AutomationResolver.ResolverType.Method), alignment);
+    }
+
+    public void setMaxLines(int value){
+        XposedHelpers.callMethod(simpleTextView, AutomationResolver.resolve("SimpleTextView", "setMaxLines", AutomationResolver.ResolverType.Method), value);
     }
 
     public View getSimpleTextView(){

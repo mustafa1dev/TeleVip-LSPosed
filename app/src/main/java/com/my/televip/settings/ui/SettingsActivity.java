@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.Class.ClassNames;
-import com.my.televip.Configs.ConfigManager;
 import com.my.televip.Drawable.ArrowDrawable;
 import com.my.televip.audio;
 import com.my.televip.base.AbstractMethodHook;
@@ -32,17 +31,13 @@ public class SettingsActivity {
     private final Context context;
 
     public RecyclerListView listView;
-    private LinearLayout layout;
 
 
     public View createView(SettingsController settingsController) {
+
+        LinearLayout layout = new LinearLayout(context);
+
         try {
-            if (SettingsAdapter.items != null && !SettingsAdapter.items.isEmpty())
-                SettingsAdapter.items.clear();
-            SettingsAdapter.items = ConfigManager.getItems(context);
-
-            layout = new LinearLayout(context);
-
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.setBackgroundColor(Theme.getBackgroundGrayColor());
 

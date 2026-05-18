@@ -1,7 +1,7 @@
 package com.my.televip.obfuscate.struct;
 
 import com.my.televip.ClientChecker;
-import com.my.televip.Utils;
+import com.my.televip.utils.Utils;
 
 public class ResolverRegistry {
 

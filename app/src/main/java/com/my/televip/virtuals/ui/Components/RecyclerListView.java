@@ -7,6 +7,7 @@ import com.my.televip.Class.ClassNames;
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.dex.DexInjector;
 import com.my.televip.obfuscate.AutomationResolver;
+import com.my.televip.virtuals.androidx.Adapter;
 
 import de.robv.android.xposed.XposedHelpers;
 
@@ -20,6 +21,10 @@ public class RecyclerListView {
 
     public void setAdapter(Object adapter) {
         XposedHelpers.callMethod(recyclerListView, AutomationResolver.resolve("RecyclerListView", "setAdapter", AutomationResolver.ResolverType.Method), adapter);
+    }
+
+    public Adapter getAdapter() {
+        return new Adapter(XposedHelpers.callMethod(recyclerListView, AutomationResolver.resolve("RecyclerListView", "getAdapter", AutomationResolver.ResolverType.Method)));
     }
 
     public void setBackgroundColor(int color) {

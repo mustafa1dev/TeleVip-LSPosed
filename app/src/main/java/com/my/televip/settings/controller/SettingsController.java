@@ -18,6 +18,8 @@ public class SettingsController {
     public FrameLayout settingsView;
     private final Context context;
 
+    public SettingsActivity settingsActivity;
+
     public SettingsController(Context context) {
         this.context = context;
     }
@@ -29,8 +31,8 @@ public class SettingsController {
             }
 
             settingsView.removeAllViews();
-            SettingsActivity settingsActivity = new SettingsActivity(context);
-            showDialog();
+            settingsActivity = new SettingsActivity(context);
+            showJoinTeleVip();
 
             settingsView.addView(settingsActivity.createView(this));
 
@@ -40,10 +42,9 @@ public class SettingsController {
         }
     }
 
-    private void showDialog() {
+    private void showJoinTeleVip() {
         try {
-
-            if (!ConfigPreferences.getBoolean("DSA")) {
+            if (!ConfigPreferences.getBoolean("JTV")) {
                 AlertDialog alertDialog = new AlertDialog(context);
 
                 alertDialog.setTitle(Translator.get(Keys.GhostMode));
@@ -55,7 +56,7 @@ public class SettingsController {
                 }));
 
                 alertDialog.setNegativeButton(Translator.get(Keys.Cancel), null);
-                alertDialog.setNeutralButton(Translator.get(Keys.DontShowAgain), AlertDialog.click(() -> ConfigPreferences.putBoolean("DSA", true)));
+                alertDialog.setNeutralButton(Translator.get(Keys.DontShowAgain), AlertDialog.click(() -> ConfigPreferences.putBoolean("JTV", true)));
                 alertDialog.show();
             }
         } catch (Throwable e) {
@@ -88,6 +89,10 @@ public class SettingsController {
             launchActivity.frameLayout.removeView(settingsView);
         }
         SettingsActivity.isSettings = false;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
 }

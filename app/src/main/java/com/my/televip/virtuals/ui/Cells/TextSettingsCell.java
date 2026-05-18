@@ -30,6 +30,10 @@ public class TextSettingsCell {
         XposedHelpers.callMethod(textSettingsCell, AutomationResolver.resolve("TextSettingsCell","setText", AutomationResolver.ResolverType.Method), text, divider);
     }
 
+    public void setTextAndValue(CharSequence text, String value, boolean animated, boolean divider){
+        XposedHelpers.callMethod(textSettingsCell, AutomationResolver.resolve("TextSettingsCell","setTextAndValue", AutomationResolver.ResolverType.Method), text, value, animated, divider);
+    }
+
     public TextView getTextView(){
         return (TextView) XposedHelpers.getObjectField(textSettingsCell,AutomationResolver.resolve("TextSettingsCell","textView", AutomationResolver.ResolverType.Field));
     }

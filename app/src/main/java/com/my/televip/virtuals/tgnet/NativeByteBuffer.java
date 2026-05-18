@@ -20,4 +20,12 @@ public class NativeByteBuffer {
         return (int) XposedHelpers.callMethod(nativeByteBuffer, AutomationResolver.resolve("NativeByteBuffer","readInt32", AutomationResolver.ResolverType.Method), exception);
     }
 
+    public void position(int i) {
+        XposedHelpers.callMethod(nativeByteBuffer, AutomationResolver.resolve("NativeByteBuffer","position", AutomationResolver.ResolverType.Method), i);
+    }
+
+    public void writeInt32(int i) {
+        XposedHelpers.callMethod(nativeByteBuffer, AutomationResolver.resolve("NativeByteBuffer","writeInt32", AutomationResolver.ResolverType.Method), i);
+    }
+
 }

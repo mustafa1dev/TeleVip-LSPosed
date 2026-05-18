@@ -1,8 +1,7 @@
 package com.my.televip.Clients;
 
-import com.my.televip.Class.ClassNames;
 import com.my.televip.Class.ClassLoad;
-import com.my.televip.Utils;
+import com.my.televip.Class.ClassNames;
 import com.my.televip.hooks.HMethod;
 import com.my.televip.logging.Logger;
 import com.my.televip.obfuscate.struct.ClassInfo;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedHelpers;
 
 public class Telegraph {
     private static final List<ClassInfo> classList = new ArrayList<>();
@@ -114,130 +112,65 @@ public class Telegraph {
     }
 
     public static void loadParameter() {
+
+        classList.add(new ClassInfo("org.telegram.ui.Components.UniversalAdapter", "org.telegram.ui.Components.IP"));
+        classList.add(new ClassInfo("org.telegram.messenger.LocaleController", "org.telegram.messenger.i9"));
         classList.add(new ClassInfo("org.telegram.messenger.ApplicationLoader", "org.telegram.messenger.com5"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.AlertDialog$OnButtonClickListener", "org.telegram.ui.ActionBar.AlertDialog$coN"));
+        classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities", "org.telegram.messenger.com4"));
         classList.add(new ClassInfo("org.telegram.ui.ActionBar.Theme", "org.telegram.ui.ActionBar.x"));
-        classList.add(new ClassInfo("org.telegram.messenger.LocaleController", "org.telegram.messenger.h9"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ChatMessageCell","org.telegram.ui.Cells.COm7"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesController","org.telegram.messenger.Zq"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage","org.telegram.messenger.uw"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationsController","org.telegram.messenger.Yx"));
-        classList.add(new ClassInfo("org.telegram.messenger.NotificationCenter","org.telegram.messenger.Ow"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessageObject","org.telegram.messenger.ih"));
-        classList.add(new ClassInfo("org.telegram.messenger.UserConfig","org.telegram.messenger.OE"));
-        classList.add(new ClassInfo("org.telegram.ui.Stories.StoriesController","org.telegram.ui.Stories.w2"));
-        classList.add(new ClassInfo("org.telegram.ui.Stories.PeerStoriesView$StoryItemHolder","org.telegram.ui.Stories.m$coM2"));
-        classList.add(new ClassInfo("org.telegram.ui.ActionBar.BaseFragment","org.telegram.ui.ActionBar.com8"));
-        classList.add(new ClassInfo("org.telegram.ui.PhotoViewer$PhotoViewerProvider","org.telegram.ui.PhotoViewer$lpt1"));
-        classList.add(new ClassInfo("org.telegram.ui.ChatActivity","org.telegram.ui.Og"));
-        classList.add(new ClassInfo("org.telegram.messenger.BaseController","org.telegram.messenger.com7"));
-        classList.add(new ClassInfo("org.telegram.messenger.AndroidUtilities","org.telegram.messenger.com4"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.TextCheckCell","org.telegram.ui.Cells.N0"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.ShadowSectionCell","org.telegram.ui.Cells.Q"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.HeaderCell","org.telegram.ui.Cells.lPT6"));
-        classList.add(new ClassInfo("org.telegram.ui.Cells.TextSettingsCell","org.telegram.ui.Cells.n1"));
-        classList.add(new ClassInfo("org.telegram.ui.Components.UniversalAdapter","org.telegram.ui.Components.iN"));
-        classList.add(new ClassInfo("org.telegram.messenger.SharedConfig","org.telegram.messenger.DC"));
-        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage$IntCallback","org.telegram.messenger.uw$AUx"));
-        classList.add(new ClassInfo("org.telegram.ui.ChatActivity$ChatMessageCellDelegate","org.telegram.ui.Og$LPT6"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.HeaderCell", "org.telegram.ui.Cells.LPT6"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.TextCheckCell", "org.telegram.ui.Cells.O0"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.ShadowSectionCell", "org.telegram.ui.Cells.S"));
+        classList.add(new ClassInfo("org.telegram.ui.Cells.TextSettingsCell", "org.telegram.ui.Cells.o1"));
+        classList.add(new ClassInfo("org.telegram.ui.ActionBar.AlertDialog$OnButtonClickListener", "org.telegram.ui.ActionBar.AlertDialog$coN"));
+        classList.add(new ClassInfo("org.telegram.messenger.UserConfig", "org.telegram.messenger.jF"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesStorage", "org.telegram.messenger.Ew"));
+        classList.add(new ClassInfo("org.telegram.messenger.MessagesController", "org.telegram.messenger.ir"));
 
-        fieldList.add(new FieldInfo("ApplicationLoader", "applicationContext", "b"));
-        fieldList.add(new FieldInfo("LaunchActivity", "drawerLayoutAdapter", "M"));
-        fieldList.add(new FieldInfo("LaunchActivity", "drawerLayoutContainer", "L"));
-        fieldList.add(new FieldInfo("LocaleController", "currentLocale", "y"));
-        fieldList.add(new FieldInfo("ChatMessageCell","currentMessageObject","W6"));
-        fieldList.add(new FieldInfo("MessagesController","dialogMessage","C"));
-        fieldList.add(new FieldInfo("MessagesController","dialogMessagesByIds","F"));
-        fieldList.add(new FieldInfo("NotificationCenter","messagesDeleted","c0"));
-        fieldList.add(new FieldInfo("MessagesController$ReadTask","dialogId","a"));
-        fieldList.add(new FieldInfo("Theme","chat_timePaint","o3"));
-        fieldList.add(new FieldInfo("ChatMessageCell","currentTimeString","fb"));
-        fieldList.add(new FieldInfo("ChatMessageCell","timeTextWidth","cb"));
-        fieldList.add(new FieldInfo("ChatMessageCell","timeWidth","bb"));
-        fieldList.add(new FieldInfo("ProfileActivity","userId","J0"));
-        fieldList.add(new FieldInfo("LaunchActivity","frameLayout","H"));
-        fieldList.add(new FieldInfo("ChatActivity","selectedObject","S4"));
-        fieldList.add(new FieldInfo("MessagesStorage","database","b"));
-        fieldList.add(new FieldInfo("UserConfig","clientUserId","i"));
-        fieldList.add(new FieldInfo("UserConfig","selectedAccount","j0"));
-        fieldList.add(new FieldInfo("UItem","id","d"));
-        fieldList.add(new FieldInfo("SettingsActivity$SettingCell","iconView","c"));
-        fieldList.add(new FieldInfo("ChatActivity","pinnedMessageView","l2"));
-        fieldList.add(new FieldInfo("PhotoViewer$PlaceProviderObject","imageReceiver","a"));
+        fieldList.add(new FieldInfo("ApplicationLoader","applicationContext", "b"));
+        fieldList.add(new FieldInfo("LocaleController","currentLocale", "y"));
+        fieldList.add(new FieldInfo("UItem","id", "d"));
+        fieldList.add(new FieldInfo("SettingsActivity$SettingCell","iconView", "c"));
+        fieldList.add(new FieldInfo("LaunchActivity","frameLayout", "H"));
+        fieldList.add(new FieldInfo("UserConfig","selectedAccount", "j0"));
 
-        methodList.add(new MethodInfo("AlertDialog","setTitle", "H"));
-        methodList.add(new MethodInfo("AlertDialog","setView", "O"));
-        methodList.add(new MethodInfo("AlertDialog","setMessage", "G"));
-        methodList.add(new MethodInfo("AlertDialog","setPositiveButton", "F"));
-        methodList.add(new MethodInfo("AlertDialog","setNegativeButton", "z"));
-        methodList.add(new MethodInfo("AlertDialog","setNeutralButton", "A"));
-        methodList.add(new MethodInfo("AlertDialog","show", "R"));
-        methodList.add(new MethodInfo("AlertDialog$OnButtonClickListener","onClick", "a"));
-        methodList.add(new MethodInfo("Theme","getActiveTheme", "T3"));
-        methodList.add(new MethodInfo("Theme","isDark", "J"));
-        methodList.add(new MethodInfo("Theme","getEventType", "O2"));
-        methodList.add(new MethodInfo("DrawerLayoutContainer", "closeDrawer", "e"));
-        methodList.add(new MethodInfo("LocaleController", "getInstance", "E1"));
-        methodList.add(new MethodInfo("ChatMessageCell","measureTime","z6"));
-        methodList.add(new MethodInfo("MessagesController","deleteMessages","M9"));
-        methodList.add(new MethodInfo("MessagesStorage","markMessagesAsDeleted","l7"));
-        methodList.add(new MethodInfo("MessagesStorage","markMessagesAsDeletedInternal","o7"));
-        methodList.add(new MethodInfo("MessagesStorage","updateDialogsWithDeletedMessagesInternal","h9"));
-        methodList.add(new MethodInfo("MessagesStorage","updateDialogsWithDeletedMessages","g9"));
-        methodList.add(new MethodInfo("NotificationsController","removeDeletedMessagesFromNotifications","q1"));
-        methodList.add(new MethodInfo("NotificationCenter","postNotificationName","B"));
-        methodList.add(new MethodInfo("UserConfig","isPremium","N"));
-        methodList.add(new MethodInfo("MessagesController","completeReadTask","u9"));
-        methodList.add(new MethodInfo("MessagesController","getUser","mc"));
-        methodList.add(new MethodInfo("MessagesStorage","getDatabase","z5"));
-        methodList.add(new MethodInfo("StoriesController","hasStories","f1"));
-        methodList.add(new MethodInfo("StoriesController","hasStories2","g1"));
-        methodList.add(new MethodInfo("MessagesController","storiesEnabled","Og"));
-        methodList.add(new MethodInfo("MessagesController","storyEntitiesAllowed","Ng"));
-        methodList.add(new MethodInfo("MessagesController","storyEntitiesAllowed2","Pg"));
-        methodList.add(new MethodInfo("PeerStoriesView$StoryItemHolder","allowScreenshots","r"));
-        methodList.add(new MethodInfo("UserConfig","getClientUserId","v"));
-        methodList.add(new MethodInfo("ProfileActivity","updateProfileData","Ie"));
-        methodList.add(new MethodInfo("MessagesController","isChatNoForwards","Qc"));
-        methodList.add(new MethodInfo("ChatActivity","sendSecretMessageRead","Fx"));
-        methodList.add(new MethodInfo("ChatActivity","sendSecretMediaDelete","Ex"));
-        methodList.add(new MethodInfo("TextCheckCell","setTextAndValueAndCheck","j"));
-        methodList.add(new MethodInfo("TextCheckCell","setTextAndCheck","i"));
-        methodList.add(new MethodInfo("TextCheckCell","isChecked","d"));
-        methodList.add(new MethodInfo("AndroidUtilities","isTablet","u4"));
-        methodList.add(new MethodInfo("TextSettingsCell","setText","c"));
-        methodList.add(new MethodInfo("LocaleController","formatShortNumber","x0"));
-        methodList.add(new MethodInfo("ChatActivity","fillMessageMenu","Ur"));
-        methodList.add(new MethodInfo("ChatActivity","processSelectedOption","Qw"));
-        methodList.add(new MethodInfo("MessagesStorage","putMessages","P7"));
+        methodList.add(new MethodInfo("SettingsActivity","fillItems","q0"));
+        methodList.add(new MethodInfo("SettingsActivity","onClick","u0"));
         methodList.add(new MethodInfo("SettingsActivity$SettingCell","set","a"));
-        methodList.add(new MethodInfo("SettingsActivity","fillItems","M0"));
-        methodList.add(new MethodInfo("SettingsActivity","onClick","Q0"));
-        methodList.add(new MethodInfo("MessagesStorage","getInstance","N5"));
-        methodList.add(new MethodInfo("MessagesStorage","getStorageQueue","g6"));
-        methodList.add(new MethodInfo("MessagesStorage","getDialogMaxMessageId","E5"));
-        methodList.add(new MethodInfo("MessagesController","getInstance","Cb"));
-        methodList.add(new MethodInfo("MessagesController","processNewDifferenceParams","af"));
-        methodList.add(new MethodInfo("MessagesController","getInputChannel","qb"));
+        methodList.add(new MethodInfo("LocaleController","getInstance","F1"));
+        methodList.add(new MethodInfo("AndroidUtilities","isTablet","x4"));
+        methodList.add(new MethodInfo("Theme","isCurrentThemeDark","T3"));
+        methodList.add(new MethodInfo("TextCheckCell","setTextAndCheck","i"));
+        methodList.add(new MethodInfo("TextCheckCell","setTextAndValueAndCheck","j"));
+        methodList.add(new MethodInfo("TextCheckCell","isChecked","d"));
+        methodList.add(new MethodInfo("TextSettingsCell","setTextAndValue","h"));
+        methodList.add(new MethodInfo("TextSettingsCell","setText","c"));
+        methodList.add(new MethodInfo("AlertDialog","setTitle","H"));
+        methodList.add(new MethodInfo("AlertDialog","setView","O"));
+        methodList.add(new MethodInfo("AlertDialog","setMessage","x"));
+        methodList.add(new MethodInfo("AlertDialog","setPositiveButton","F"));
+        methodList.add(new MethodInfo("AlertDialog","setNegativeButton","z"));
+        methodList.add(new MethodInfo("AlertDialog","setNeutralButton","A"));
+        methodList.add(new MethodInfo("AlertDialog","show","R"));
+        methodList.add(new MethodInfo("AlertDialog","create","c"));
+        methodList.add(new MethodInfo("AlertDialog","getDismissRunnable","f"));
+        methodList.add(new MethodInfo("AlertDialog$OnButtonClickListener","onClick","a"));
+        methodList.add(new MethodInfo("UserConfig","isPremium","N"));
+        methodList.add(new MethodInfo("UserConfig","getClientUserId","v"));
         methodList.add(new MethodInfo("UserConfig","getCurrentUser","w"));
-        methodList.add(new MethodInfo("ChatActivity","createPinnedMessageView","mr"));
-        methodList.add(new MethodInfo("ChatActivity","updatePinnedMessageView","Uz"));
-        methodList.add(new MethodInfo("ChatActivity","hasSelectedNoforwardsMessage","yt"));
-        methodList.add(new MethodInfo("Theme","isCurrentThemeDark","U3"));
-        methodList.add(new MethodInfo("MessagesController","checkPromoInfoInternal","q9"));
-        methodList.add(new MethodInfo("MessagesController","hidePromoDialog","Hc"));
-        methodList.add(new MethodInfo("ChatActivity$ChatMessageCellDelegate","didPressImage","C"));
-        methodList.add(new MethodInfo("PhotoViewer","getInstance","pc"));
-        methodList.add(new MethodInfo("PhotoViewer","setParentActivity","Oe"));
-        methodList.add(new MethodInfo("PhotoViewer","openPhoto","Kd"));
+        methodList.add(new MethodInfo("MessagesController","getInstance","Ob"));
+        methodList.add(new MethodInfo("MessagesStorage","getInstance","N5"));
+        methodList.add(new MethodInfo("MessagesController","processNewDifferenceParams","qf"));
+        methodList.add(new MethodInfo("MessagesStorage","getStorageQueue","g6"));
+        methodList.add(new MethodInfo("MessagesStorage","getDatabase","z5"));
 
-        ParameterResolver.register("fillMessageMenu", new Class[]{ClassLoad.getClass(ClassNames.MESSAGE_OBJECT), ClassLoad.getClass(ClassNames.MESSAGE_OBJECT), ArrayList.class, ArrayList.class, ArrayList.class});
+        //ParameterResolver.register("fillMessageMenu", new Class[]{ClassLoad.getClass(ClassNames.MESSAGE_OBJECT), ClassLoad.getClass(ClassNames.MESSAGE_OBJECT), ArrayList.class, ArrayList.class, ArrayList.class});
 
     }
 
     public static void removeAd(){
         try {
-            Class<?> connectionsManager = XposedHelpers.findClassIfExists("org.telegram.tgnet.ConnectionsManager", Utils.classLoader);
+            Class<?> connectionsManager = ClassLoad.getClass(ClassNames.CONNECTIONS_MANAGER);
             if (connectionsManager != null) {
                 HMethod.hookMethod(connectionsManager, "native_expireFile", long.class, new XC_MethodReplacement() {
                     @Override

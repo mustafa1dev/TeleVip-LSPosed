@@ -1,13 +1,12 @@
 package com.my.televip.language;
 
-import com.my.televip.Utils;
+import com.my.televip.utils.Utils;
 import com.my.televip.logging.Logger;
 import com.my.televip.virtuals.messenger.LocaleController;
 
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,18 +60,17 @@ public class Translator {
     }
 
     private static String readFully(InputStream is) throws Exception {
+        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
         int bytesRead;
-        StringBuilder sb = new StringBuilder();
-
         while ((bytesRead = is.read(buffer)) != -1) {
-            sb.append(new String(buffer, 0, bytesRead, StandardCharsets.UTF_8));
+            baos.write(buffer, 0, bytesRead);
         }
-
-        return sb.toString();
+        return baos.toString("UTF-8");
     }
 
     public static String get(String key) {
+        if (localeController == null) return key;
         try {
             if (localeController.getCurrentLocale() != null) {
                 String lang = localeController.getCurrentLocale().getLanguage();
@@ -100,6 +98,7 @@ public class Translator {
     }
 
     public static String get(String key, Object... args) {
+        if (localeController == null) return key;
         try {
             if (localeController.getCurrentLocale() != null) {
                 String lang = localeController.getCurrentLocale().getLanguage();

@@ -4,7 +4,7 @@ import android.graphics.Color;
 import android.text.TextPaint;
 
 import com.my.televip.Class.ClassNames;
-import com.my.televip.Utils;
+import com.my.televip.utils.Utils;
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.logging.Logger;
@@ -17,9 +17,9 @@ import de.robv.android.xposed.XposedHelpers;
 
 public class Theme {
 
-    public static TextPaint getTextPaint(ClassLoader classLoader)
+    public static TextPaint getTextPaint()
     {
-        Class<?> theme = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.ActionBar.Theme"), classLoader);
+        Class<?> theme = ClassLoad.getClass(ClassNames.THEME);
         List<Field> fields = new ArrayList<>();
         for (Field declaredField : theme.getDeclaredFields())
             if (declaredField.getName().equals(AutomationResolver.resolve("Theme", "chat_timePaint", AutomationResolver.ResolverType.Field)))

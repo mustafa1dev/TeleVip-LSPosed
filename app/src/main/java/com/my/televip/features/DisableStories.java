@@ -19,7 +19,7 @@ public class DisableStories {
                 isEnable = true;
 
                 if (ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER) != null) {
-                    HMethod.hookMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), new String[]{AutomationResolver.resolve("MessagesController", "storiesEnabled", AutomationResolver.ResolverType.Method), AutomationResolver.resolve("MessagesController", "storyEntitiesAllowed", AutomationResolver.ResolverType.Method)}, new AbstractMethodHook() {
+                    HMethod.hookMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), "MessagesController", new String[]{"storiesEnabled", "storyEntitiesAllowed",}, new AbstractMethodHook() {
                         @Override
                         protected void beforeMethod(MethodHookParam param) {
                             if (ConfigManager.disableStories.isEnable()) param.setResult(false);

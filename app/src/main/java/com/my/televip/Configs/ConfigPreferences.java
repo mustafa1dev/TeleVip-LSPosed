@@ -3,7 +3,7 @@ package com.my.televip.Configs;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.my.televip.Class.ClassLoad;
+import com.my.televip.application.ApplicationLoaderHook;
 import com.my.televip.logging.Logger;
 
 public class ConfigPreferences {
@@ -12,7 +12,7 @@ public class ConfigPreferences {
 
 
     public static void init(){
-        sharedPreferences = ClassLoad.getApplicationContext().getSharedPreferences("TeleVip", Activity.MODE_PRIVATE);
+        sharedPreferences = ApplicationLoaderHook.getApplicationContext().getSharedPreferences("TeleVip", Activity.MODE_PRIVATE);
     }
 
     public static boolean getBoolean(String key) {
@@ -27,6 +27,22 @@ public class ConfigPreferences {
     public static void putBoolean(String key, boolean b) {
         try {
             sharedPreferences.edit().putBoolean(key, b).apply();
+        } catch (ClassCastException e) {
+            sharedPreferences.edit().remove(key).apply();
+        }
+    }
+    public static int getInt(String key) {
+        try {
+            return sharedPreferences.getInt(key, 0);
+        } catch (ClassCastException e) {
+            sharedPreferences.edit().remove(key).apply();
+            return 0;
+        }
+    }
+
+    public static void putInt(String key, int var) {
+        try {
+            sharedPreferences.edit().putInt(key, var).apply();
         } catch (ClassCastException e) {
             sharedPreferences.edit().remove(key).apply();
         }

@@ -1,6 +1,6 @@
 package com.my.televip.settings;
 
-import com.my.televip.Utils;
+import com.my.televip.utils.Utils;
 import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.settings.controller.SettingsController;
 import com.my.televip.settings.hook.SettingsHook;

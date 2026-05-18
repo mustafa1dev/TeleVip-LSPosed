@@ -111,6 +111,7 @@ public class Nagram {
 
     public static void loadParameter() {
         ParameterResolver.register("markMessagesAsDeletedInternal",new Class[]{ArrayList.class, boolean.class, int.class, int.class, long.class});
+        ParameterResolver.register("formatSmallDateChat",new Class[]{long.class});
 
         ParameterResolver.register("putMessages",new Class[]{int.class, int.class, int.class, long.class, long.class, ClassLoad.getClass(ClassNames.TL_MESSAGES_MESSAGES), boolean.class});
     }

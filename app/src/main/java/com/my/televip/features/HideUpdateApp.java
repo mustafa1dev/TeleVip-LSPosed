@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.my.televip.Class.ClassNames;
 import com.my.televip.Class.ClassLoad;
+import com.my.televip.application.ApplicationLoaderHook;
 import com.my.televip.hooks.HMethod;
 import com.my.televip.logging.Logger;
 import com.my.televip.obfuscate.AutomationResolver;
@@ -20,7 +21,7 @@ public class HideUpdateApp {
             if (!isEnable) {
                 isEnable = true;
 
-                SharedPreferences preferences = ClassLoad.getApplicationContext().getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
+                SharedPreferences preferences = ApplicationLoaderHook.getApplicationContext().getSharedPreferences("mainconfig", Activity.MODE_PRIVATE);
                 preferences.edit().remove("appUpdate").apply();
                 preferences.edit().remove("appUpdateCheckTime").apply();
                 preferences.edit().remove("appUpdateBuild").apply();

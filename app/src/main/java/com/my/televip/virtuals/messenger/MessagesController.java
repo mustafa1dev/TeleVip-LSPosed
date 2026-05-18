@@ -1,10 +1,12 @@
 package com.my.televip.virtuals.messenger;
 
 import android.content.SharedPreferences;
+import android.util.SparseArray;
 
-import com.my.televip.Class.ClassNames;
 import com.my.televip.Class.ClassLoad;
+import com.my.televip.Class.ClassNames;
 import com.my.televip.obfuscate.AutomationResolver;
+import com.my.televip.virtuals.androidx.LongSparseArray;
 import com.my.televip.virtuals.tgnet.TLRPC;
 
 import de.robv.android.xposed.XposedHelpers;
@@ -26,17 +28,32 @@ public class MessagesController {
         XposedHelpers.callMethod(messagesController, "processNewDifferenceParams", pts, date, pts_count);
     }
 
+    public void removePromoDialog() {
+        XposedHelpers.callMethod(messagesController, AutomationResolver.resolve("MessagesController", "removePromoDialog", AutomationResolver.ResolverType.Method));
+    }
+
     public static Object getInputChannel(TLRPC.InputPeer peer) {
         return XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), AutomationResolver.resolve("MessagesController", "getInputChannel", AutomationResolver.ResolverType.Method), peer.inputPeer);
+    }
+
+    public SparseArray<Object> getDialogMessagesByIds() {
+        return (SparseArray<Object>) XposedHelpers.getObjectField(messagesController, AutomationResolver.resolve("MessagesController", "dialogMessagesByIds", AutomationResolver.ResolverType.Field));
+    }
+
+    public LongSparseArray getDialogMessage() {
+        return  new LongSparseArray(XposedHelpers.getObjectField(messagesController, AutomationResolver.resolve("MessagesController", "dialogMessage", AutomationResolver.ResolverType.Field)));
     }
 
     public static SharedPreferences getGlobalMainSettings() {
         return (SharedPreferences) XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), AutomationResolver.resolve("MessagesController", "getGlobalMainSettings", AutomationResolver.ResolverType.Method));
     }
 
-
     public static Object getInputChannel(long id) {
         return XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.MESSAGES_CONTROLLER), AutomationResolver.resolve("MessagesController", "getInputChannel", AutomationResolver.ResolverType.Method), id);
+    }
+
+    public MessagesStorage getMessagesStorage() {
+        return new MessagesStorage(XposedHelpers.callMethod(messagesController, AutomationResolver.resolve("MessagesController", "getMessagesStorage", AutomationResolver.ResolverType.Method)));
     }
 
     public static MessagesController getInstance(int num){

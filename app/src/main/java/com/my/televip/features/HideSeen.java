@@ -91,7 +91,7 @@ public class HideSeen {
             SQLiteCursor cursor = null;
             int[] max = new int[1];
             try {
-                cursor = messagesStorage.getDatabase().queryFinalized("SELECT MAX(mid) FROM messages_v2 WHERE uid = " + dialog_id);
+                cursor = messagesStorage.getDatabase().queryFinalized("SELECT MAX(mid) FROM messages_v2 WHERE uid = " + dialog_id, new Object[]{});
                 if (cursor.next()) {
                     max[0] = cursor.intValue(0);
                 }

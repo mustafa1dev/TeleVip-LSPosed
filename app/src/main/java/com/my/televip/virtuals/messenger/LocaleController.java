@@ -20,4 +20,8 @@ public class LocaleController {
         return (Locale) XposedHelpers.getObjectField(localeController, AutomationResolver.resolve("LocaleController", "currentLocale", AutomationResolver.ResolverType.Field));
     }
 
+    public static boolean isRTL() {
+        return (boolean) XposedHelpers.getStaticBooleanField(ClassLoad.getClass(ClassNames.LOCALE_CONTROLLER), AutomationResolver.resolve("LocaleController", "isRTL", AutomationResolver.ResolverType.Field));
+    }
+
 }

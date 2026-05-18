@@ -4,28 +4,37 @@ public class ConfigItem {
 
     public static final int HEADER = 0,
             SWITCH = 1,
-            BUTTON = 2,
+            TEXT = 2,
             DIVIDER = 3,
             INFO = 4;
 
     private final int type;
     private String key;
-    private String text;
-    private boolean value;
+    private String value;
+    private boolean restartRequired;
+    private boolean enable;
     private Runnable runnable;
 
-    public ConfigItem(int type, String key, String text, boolean value, Runnable runnable) {
+    public ConfigItem(int type, String key, String value, boolean enable, Runnable runnable) {
         this.type = type;
         this.key = key;
-        this.text = text;
         this.value = value;
+        this.enable = enable;
         this.runnable = runnable;
     }
 
-    public ConfigItem(int type, String key, boolean value, Runnable runnable) {
+    public ConfigItem(int type, String key, boolean restartRequired, boolean enable, Runnable runnable) {
         this.type = type;
         this.key = key;
-        this.value = value;
+        this.restartRequired = restartRequired;
+        this.enable = enable;
+        this.runnable = runnable;
+    }
+
+    public ConfigItem(int type, String key, boolean enable, Runnable runnable) {
+        this.type = type;
+        this.key = key;
+        this.enable = enable;
         this.runnable = runnable;
     }
 
@@ -40,15 +49,22 @@ public class ConfigItem {
 
     public int getType() { return type; }
     public String getKey() { return key; }
-    public String getText() { return text; }
+    public String getValue() { return value; }
 
-    public boolean isEnable() { return value; }
+    public boolean isEnable() { return enable; }
+
+    public boolean isRestartRequired() { return restartRequired; }
+
     public void setEnable(boolean value) {
-        this.value = value;
+        this.enable = value;
         ConfigPreferences.putBoolean(key, value);
     }
 
-    public Runnable getRunnable() { return runnable; }
+    public int getCustomCalendar() { return ConfigPreferences.getInt(key+"Int"); }
+
+    public void setCustomCalendar(int value) {
+        ConfigPreferences.putInt(key+"Int", value);
+    }
 
     public void run() {
         if (runnable != null) runnable.run();

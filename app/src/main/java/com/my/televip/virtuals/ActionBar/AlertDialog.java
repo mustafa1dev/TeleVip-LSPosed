@@ -1,11 +1,12 @@
 package com.my.televip.virtuals.ActionBar;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
 import com.my.televip.Class.ClassNames;
-import com.my.televip.Utils;
+import com.my.televip.utils.Utils;
 import com.my.televip.Class.ClassLoad;
 import com.my.televip.obfuscate.AutomationResolver;
 
@@ -77,6 +78,14 @@ public class AlertDialog {
 
     public void show() {
         XposedHelpers.callMethod(alertDialog, AutomationResolver.resolve("AlertDialog", "show", AutomationResolver.ResolverType.Method));
+    }
+
+    public Dialog create() {
+        return (Dialog) XposedHelpers.callMethod(alertDialog, AutomationResolver.resolve("AlertDialog", "create", AutomationResolver.ResolverType.Method));
+    }
+
+    public Runnable getDismissRunnable() {
+        return (Runnable) XposedHelpers.callMethod(alertDialog, AutomationResolver.resolve("AlertDialog", "getDismissRunnable", AutomationResolver.ResolverType.Method));
     }
 
 }

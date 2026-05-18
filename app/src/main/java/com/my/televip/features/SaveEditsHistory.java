@@ -5,21 +5,22 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.my.televip.Class.ClassLoad;
 import com.my.televip.Class.ClassNames;
 import com.my.televip.ClientChecker;
 import com.my.televip.Configs.ConfigManager;
 import com.my.televip.Database.MessageDatabase;
 import com.my.televip.base.AbstractMethodHook;
+import com.my.televip.calendar.ConverterCalendar;
 import com.my.televip.hooks.HMethod;
 import com.my.televip.language.Keys;
 import com.my.televip.language.Translator;
-import com.my.televip.Class.ClassLoad;
-import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.logging.Logger;
+import com.my.televip.obfuscate.AutomationResolver;
 import com.my.televip.virtuals.ActionBar.AlertDialog;
-import com.my.televip.virtuals.SettingsIconResolver;
 import com.my.televip.virtuals.SQLite.SQLiteCursor;
 import com.my.televip.virtuals.SQLite.SQLiteDatabase;
+import com.my.televip.virtuals.SettingsIconResolver;
 import com.my.televip.virtuals.Theme;
 import com.my.televip.virtuals.messenger.BaseController;
 import com.my.televip.virtuals.messenger.MessageObject;
@@ -131,19 +132,32 @@ public class SaveEditsHistory {
 
                                                             StringBuilder builder = new StringBuilder();
 
-                                                            if (maxMsgCount > 0) {
+                                                            if (maxMsgCount > 1) {
 
                                                                 for (int i = 1; i <= maxMsgCount; i++) {
 
                                                                     String msg = messageDatabase.getMessage(getDialogId(message.getFrom_id()), message.getID(), i);
-                                                                    String messageEdited = messageDatabase.getMessageEdited(getDialogId(message.getFrom_id()), message.getID(), i);
 
-                                                                    if (msg != null && messageEdited != null) {
-                                                                        builder.append(Translator.get(Keys.Message)).append(i).append(Translator.get(Keys.Edited)).append(messageEdited).append("\n");
-                                                                        builder.append(msg).append("\n");
+                                                                    if (msg != null) {
+
+                                                                        long messageDate = messageDatabase.getMessageDate(getDialogId(message.getFrom_id()), message.getID(), i);
+
+                                                                        if (messageDate != 0) {
+                                                                            String date = ConverterCalendar.formatDate(messageDate);
+
+                                                                            builder.append(Translator.get(Keys.Message)).append(i).append(" ").append(date).append("\n");
+                                                                            builder.append(msg).append("\n");
+                                                                        }
                                                                     }
                                                                 }
                                                             } else {
+                                                                long messageDate = messageDatabase.getMessageDate(getDialogId(message.getFrom_id()), message.getID(), 1);
+
+                                                                if (messageDate != 0) {
+                                                                    String date = ConverterCalendar.formatDate(messageDate);
+
+                                                                    builder.append(date).append("\n");
+                                                                }
                                                                 builder.append(messageDatabase.getMessage(getDialogId(message.getFrom_id()), message.getID()));
                                                             }
 
@@ -202,10 +216,10 @@ public class SaveEditsHistory {
                                                     TLRPC.Message message = new TLRPC.Message(messages.getMessages().get(a));
 
                                                     int id = message.getID();
-                                                    SQLiteCursor cursor = sqLiteDatabase.queryFinalized(String.format(Locale.US, "SELECT mid, data, ttl, mention, read_state, send_state, custom_params FROM messages_v2 WHERE mid = %d AND uid = %d", id, MessageObject.getDialogId(message)));
+                                                    SQLiteCursor cursor = sqLiteDatabase.queryFinalized(String.format(Locale.US, "SELECT data FROM messages_v2 WHERE mid = %d AND uid = %d", id, MessageObject.getDialogId(message)), new Object[]{});
 
                                                     if (cursor.next()) {
-                                                        NativeByteBuffer data = cursor.byteBufferValue(1);
+                                                        NativeByteBuffer data = cursor.byteBufferValue(0);
 
                                                         if (data.nativeByteBuffer != null) {
 

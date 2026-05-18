@@ -3,7 +3,7 @@ package com.my.televip.features;
 import com.my.televip.Class.ClassNames;
 import com.my.televip.ClientChecker;
 import com.my.televip.Configs.ConfigManager;
-import com.my.televip.Utils;
+import com.my.televip.utils.Utils;
 import com.my.televip.base.AbstractMethodHook;
 import com.my.televip.hooks.HMethod;
 import com.my.televip.Class.ClassLoad;

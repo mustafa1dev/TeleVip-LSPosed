@@ -4,7 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.my.televip.Utils;
+import com.my.televip.Class.ClassLoad;
+import com.my.televip.Class.ClassNames;
 import com.my.televip.obfuscate.AutomationResolver;
 
 import de.robv.android.xposed.XposedHelpers;
@@ -14,8 +15,7 @@ public class TextCheckCell {
     public Object textCell;
 
     public TextCheckCell(Context context){
-        Class<?> textCheckClass = XposedHelpers.findClassIfExists(AutomationResolver.resolve("org.telegram.ui.Cells.TextCheckCell"), Utils.classLoader);
-        textCell = XposedHelpers.newInstance(textCheckClass, context);
+        textCell = XposedHelpers.newInstance(ClassLoad.getClass(ClassNames.TEXT_CHECK_CELL), context);
     }
 
     public TextCheckCell(Object obj){

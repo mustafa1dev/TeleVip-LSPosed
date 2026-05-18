@@ -17,7 +17,7 @@ public class MessagesStorage {
 
     public SQLiteDatabase getDatabase() {
 
-        return new SQLiteDatabase(XposedHelpers.getObjectField(messagesStorage, AutomationResolver.resolve("MessagesStorage", "database", AutomationResolver.ResolverType.Field)));
+        return new SQLiteDatabase(XposedHelpers.callMethod(messagesStorage, AutomationResolver.resolve("MessagesStorage", "getDatabase", AutomationResolver.ResolverType.Method)));
     }
 
     public DispatchQueue getStorageQueue() {

@@ -29,7 +29,7 @@ public class Bridge {
         return XposedHelpers.callStaticMethod(ClassLoad.getClass(ClassNames.SETTINGS_ADAPTER, DexInjector.classLoader), "getLayoutManager", context);
     }
 
-    public static void init(Context context, SettingsController settingsController){
+    public static void init(SettingsController settingsController){
         try {
             Class<?> bridgeClass = XposedHelpers.findClassIfExists("com.televip.SettingsAdapter.Bridge", DexInjector.classLoader);
             Class<?> textCheckCellClass = XposedHelpers.findClassIfExists("com.televip.SettingsAdapter.SettingsAdapter$TextCheckCellHolder", DexInjector.classLoader);
@@ -62,13 +62,13 @@ public class Bridge {
             HMethod.hookMethod(bridgeClass, "onBindViewHolder", Object.class, int.class, int.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                   SettingsAdapter.onBindViewHolder(context, param.args[0], settingsController, (int) param.args[1], (int) param.args[2]);
+                   SettingsAdapter.onBindViewHolder(param.args[0], settingsController, (int) param.args[1], (int) param.args[2]);
                 }
             });
 
 
             TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(
+            settingsController.getContext().getTheme().resolveAttribute(
                     android.R.attr.selectableItemBackground,
                     outValue,
                     true
@@ -77,7 +77,7 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(textCheckCellClass, View.class, Object.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    TextCheckCell textCheckCell = new TextCheckCell(context);
+                    TextCheckCell textCheckCell = new TextCheckCell(settingsController.getContext());
                     textCheckCell.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
 
                     textCheckCell.getView().setBackgroundResource(outValue.resourceId);
@@ -91,7 +91,7 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(textSettingsCellClass, View.class, Object.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    TextSettingsCell textSettingsCell = new TextSettingsCell(context);
+                    TextSettingsCell textSettingsCell = new TextSettingsCell(settingsController.getContext());
                     textSettingsCell.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
                     textSettingsCell.getView().setBackgroundResource(outValue.resourceId);
                     textSettingsCell.getView().setClickable(true);
@@ -104,7 +104,7 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(headerCellClass, View.class, Object.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    HeaderCell header = new HeaderCell(context);
+                    HeaderCell header = new HeaderCell(settingsController.getContext());
                     header.getView().setBackgroundColor(Theme.getBackgroundWhiteOrBlueColor());
                     param.args[0] = header.getView();
                     param.args[1] = header.headerCell;
@@ -114,14 +114,14 @@ public class Bridge {
             XposedHelpers.findAndHookConstructor(shadowSectionCellClass, View.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    param.args[0] = new ShadowSectionCell(context).getView();
+                    param.args[0] = new ShadowSectionCell(settingsController.getContext()).getView();
                 }
             });
 
             XposedHelpers.findAndHookConstructor(textInfoCellClass, View.class, new AbstractMethodHook() {
                 @Override
                 protected void beforeMethod(XC_MethodHook.MethodHookParam param) {
-                    TextInfoCell textInfoCell = new TextInfoCell(context);
+                    TextInfoCell textInfoCell = new TextInfoCell(settingsController.getContext());
                     textInfoCell.setBackgroundColor(Theme.getBackgroundGrayColor());
                     param.args[0] = textInfoCell;
                 }
