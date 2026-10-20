@@ -8,20 +8,20 @@ jobs:
   probe:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7
       - name: Try sources
         run: |
-          UA='Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36'
-          echo "== apkpure plain"; curl -sS -o /dev/null -D - -m 60 'https://d.apkpure.com/b/APK/org.telegram.plus?version=latest' | head -20 || true
-          echo "== apkpure UA"; curl -sS -o /dev/null -D - -m 60 -A "$UA" 'https://d.apkpure.com/b/XAPK/org.telegram.plus?version=latest' | head -20 || true
+          UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
           echo "== apkeep"
-          url=$(curl -fsSL https://api.github.com/repos/EFForg/apkeep/releases/latest | jq -r '.assets[] | select(.name|test("x86_64-unknown-linux-gnu$")) | .browser_download_url')
-          echo "$url"; curl -fsSL -o apkeep "$url" && chmod +x apkeep
-          mkdir -p out && ./apkeep -a org.telegram.plus -d apk-pure out 2>&1 | tail -5 || true
+          curl -fsSL -o apkeep https://github.com/EFForg/apkeep/releases/download/1.1.0/apkeep-x86_64-unknown-linux-gnu && chmod +x apkeep
+          ./apkeep --help | head -60
+          mkdir -p out
+          ./apkeep -a org.telegram.plus -d apk-pure -o accept_dangers=true out 2>&1 | tail -5 || true
+          ./apkeep -l -a org.telegram.plus -d apk-pure -o accept_dangers=true 2>&1 | tail -15 || true
           ls -la out || true
+          echo "== apkmirror"
+          curl -sSL -m 60 -A "$UA" https://www.apkmirror.com/apk/rafalense/plus-messenger/ > am.html; wc -c am.html
+          grep -o 'href="/apk/rafalense/plus-messenger/plus-messenger-[^"]*-release/"' am.html | sort -u | head -8
           echo "== uptodown"
-          page=$(curl -sSL -m 60 -A "$UA" https://plus-messenger.en.uptodown.com/android/download || true)
-          echo "$page" | grep -o 'data-url="[^"]*"' | head -3
-          echo "$page" | grep -o 'class="version"[^<]*<' | head -3
-          echo "== apkcombo"; curl -sS -o /dev/null -w '%{http_code}\n' -m 60 -A "$UA" https://apkcombo.com/plus-messenger/org.telegram.plus/download/apk || true
-          echo "== apkmirror"; curl -sS -o /dev/null -w '%{http_code}\n' -m 60 -A "$UA" https://www.apkmirror.com/apk/rafalense/plus-messenger/ || true
+          curl -sSL -m 60 -A "$UA" https://plus-messenger.en.uptodown.com/android/download > ud.html; wc -c ud.html
+          grep -o 'data-url="[^"]*"' ud.html | sort -u | head; grep -o '<div class="version">[^<]*' ud.html | head -3
+          grep -o 'id="detail-download-button"[^>]*' ud.html | head -3
