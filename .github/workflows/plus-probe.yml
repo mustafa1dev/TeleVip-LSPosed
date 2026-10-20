@@ -5,26 +5,9 @@ on:
 permissions:
   contents: write
 jobs:
-  probe:
+  cleanup:
     runs-on: ubuntu-24.04
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Fetch
-        run: |
-          curl -fsSL -o /tmp/apkeep https://github.com/EFForg/apkeep/releases/download/1.1.0/apkeep-x86_64-unknown-linux-gnu && chmod +x /tmp/apkeep
-          mkdir out
-          for v in 13.0.2.0 12.10.1.1; do
-            rm -rf dl; mkdir dl
-            /tmp/apkeep -a org.telegram.plus@$v -d apk-pure -o 'acknowledge_dangers=true,arch=arm64-v8a' dl
-            f=$(ls dl/*); ls -la dl
-            if unzip -l "$f" manifest.json >/dev/null 2>&1; then
-              inner=$(unzip -Z1 "$f" '*.apk' | while read -r x; do echo "$(unzip -Zl "$f" "$x" | awk 'NR==1{print $4}') $x"; done | sort -rn | sed -n 1p | cut -d' ' -f2-)
-              unzip -p "$f" "$inner" > base.apk
-            else cp "$f" base.apk; fi
-            # only the code is needed
-            mkdir -p x && rm -rf x/* && (cd x && unzip -q ../base.apk 'classes*.dex' AndroidManifest.xml) && (cd x && zip -q -r ../out/plus-$v-dex.zip .)
-          done
-          ls -la out
-          gh release delete plus-probe -R "$GITHUB_REPOSITORY" -y 2>/dev/null || true
-          gh release create plus-probe -R "$GITHUB_REPOSITORY" --draft --title "temp: Plus Messenger dex for analysis" --notes "Temporary, deleted after analysis." out/*
+      - run: gh release delete plus-probe -R "$GITHUB_REPOSITORY" -y --cleanup-tag || gh release delete plus-probe -R "$GITHUB_REPOSITORY" -y
