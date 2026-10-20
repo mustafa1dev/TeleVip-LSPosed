@@ -8,20 +8,37 @@ jobs:
   probe:
     runs-on: ubuntu-24.04
     steps:
-      - name: Try sources
+      - uses: actions/checkout@v7
+        with:
+          ref: claude/project-thread-lu3doz
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v4
+        with:
+          packages: 'platforms;android-37.0 build-tools;36.0.0'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Check
         run: |
-          UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
-          echo "== apkeep"
-          curl -fsSL -o apkeep https://github.com/EFForg/apkeep/releases/download/1.1.0/apkeep-x86_64-unknown-linux-gnu && chmod +x apkeep
-          ./apkeep --help | head -60
-          mkdir -p out
-          ./apkeep -a org.telegram.plus -d apk-pure -o accept_dangers=true out 2>&1 | tail -5 || true
-          ./apkeep -l -a org.telegram.plus -d apk-pure -o accept_dangers=true 2>&1 | tail -15 || true
-          ls -la out || true
-          echo "== apkmirror"
-          curl -sSL -m 60 -A "$UA" https://www.apkmirror.com/apk/rafalense/plus-messenger/ > am.html; wc -c am.html
-          grep -o 'href="/apk/rafalense/plus-messenger/plus-messenger-[^"]*-release/"' am.html | sort -u | head -8
-          echo "== uptodown"
-          curl -sSL -m 60 -A "$UA" https://plus-messenger.en.uptodown.com/android/download > ud.html; wc -c ud.html
-          grep -o 'data-url="[^"]*"' ud.html | sort -u | head; grep -o '<div class="version">[^<]*' ud.html | head -3
-          grep -o 'id="detail-download-button"[^>]*' ud.html | head -3
+          curl -fsSL -o /tmp/apkeep https://github.com/EFForg/apkeep/releases/download/1.1.0/apkeep-x86_64-unknown-linux-gnu && chmod +x /tmp/apkeep
+          bt=$(ls -d "$ANDROID_HOME"/build-tools/* | tail -n1)
+          for v in 13.0.2.0 12.10.5.0; do
+            rm -rf dl; mkdir dl
+            /tmp/apkeep -a org.telegram.plus@$v -d apk-pure -o 'acknowledge_dangers=true,arch=arm64-v8a' dl 2>&1 | tail -3
+            ls -la dl; f=$(ls dl/* | head -n1)
+            if unzip -l "$f" manifest.json >/dev/null 2>&1; then
+              echo "xapk:"; unzip -l "$f"
+              inner=$(unzip -Z1 "$f" '*.apk' | while read -r x; do echo "$(unzip -Zl "$f" "$x" | awk 'NR==1{print $4}') $x"; done | sort -rn | sed -n 1p | cut -d' ' -f2-)
+              unzip -p "$f" "$inner" > client.apk
+            else cp "$f" client.apk; fi
+            "$bt/aapt2" dump badging client.apk | sed -n 1p
+            "$bt/apksigner" verify --print-certs client.apk 2>&1 | grep -i 'SHA-256' | head -2
+            unzip -l client.apk 'classes*.dex' | tail -3
+            echo "::group::test $v"
+            rm -f report.md
+            TELEVIP_CLIENT_APK="$PWD/client.apk" TELEVIP_CLIENT_REPORT="$PWD/report.md" ./gradlew :app:testDebugUnitTest --rerun --tests 'com.my.televip.obfuscate.resolve.ClientApkTest' < /dev/null > gradle.log 2>&1 || echo "TEST FAILED"
+            tail -5 gradle.log
+            echo "::endgroup::"
+            echo "=== REPORT $v"; cat report.md || true; echo "=== END"
+          done
